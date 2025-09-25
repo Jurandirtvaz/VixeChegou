@@ -1,10 +1,10 @@
 1. Frontend (React/Next.js)
 
-- Responsável pela interface do cliente e também pelo painel do comerciante.
+Responsável pela interface do cliente e também pelo painel do comerciante.
 
-- Comunicação com o backend via REST API e WebSockets (Socket.io).
+Comunicação com o backend via REST API e WebSockets (Socket.io).
 
-- Organização em pastas:
+Organização em pastas:
 
 frontend/
   pages/        # rotas do Next.js
@@ -15,13 +15,13 @@ frontend/
 
 2. Backend (Node.js + Express)
 
-- Camada de lógica de negócios e API.
+Camada de lógica de negócios e API.
 
-- Usa PostgreSQL via Prisma (ORM).
+Usa PostgreSQL via Prisma (ORM).
 
-- Emite eventos via Socket.io pros clientes acompanharem status do pedido em tempo real.
+Emite eventos via Socket.io pros clientes acompanharem status do pedido em tempo real.
 
-- Estrutura em camadas:
+Estrutura em camadas:
 
 backend/
   src/
@@ -38,3 +38,63 @@ backend/
     app.ts          # inicialização do servidor
   prisma/
     schema.prisma   # definição do banco
+
+3. Banco de Dados (PostgreSQL)
+
+Tabelas principais (MVP):
+
+users → clientes e comerciantes (diferenciados por role).
+
+merchants → estabelecimentos.
+
+products → itens do cardápio.
+
+orders → pedidos.
+
+order_items → ligação pedido ↔ produtos.
+
+reviews → avaliações (pode ficar pro backlog).
+
+4. Integrações (N8N)
+
+Envio automático do resumo do pedido via WhatsApp.
+
+Notificação ao comércio quando um novo pedido é feito.
+
+Futuro: relatórios semanais/mensais para donos de estabelecimentos.
+
+5. Comunicação
+
+REST API → CRUD básico (usuários, pedidos, produtos, etc.).
+
+Socket.io → atualização em tempo real (status do pedido).
+
+Mensageria (futuro, se escalar) → Redis ou RabbitMQ para filas de eventos (ex.: muitos pedidos ao mesmo tempo).
+
+6. Fluxo básico do pedido
+
+Cliente escolhe comércio e produtos no frontend.
+
+Pedido é enviado ao backend (salvo no PostgreSQL).
+
+Backend dispara:
+
+Evento via Socket.io → atualiza tela do comércio.
+
+Integração no N8N → manda resumo via WhatsApp.
+
+Comércio atualiza status (ex.: “em preparo”).
+
+Backend → emite evento via Socket.io → cliente vê o status em tempo real.
+
+Pedido finalizado → status “entregue”.
+
+7. Hospedagem (quando chegar a hora)
+
+Frontend (Next.js) → Vercel.
+
+Backend (Node) → Railway, Render ou VPS.
+
+Banco (Postgres) → Supabase, Neon ou RDS.
+
+N8N → Docker numa VPS (DigitalOcean, Hetzner).
