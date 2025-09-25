@@ -1,0 +1,40 @@
+1. Frontend (React/Next.js)
+
+- Responsável pela interface do cliente e também pelo painel do comerciante.
+
+- Comunicação com o backend via REST API e WebSockets (Socket.io).
+
+- Organização em pastas:
+
+frontend/
+  pages/        # rotas do Next.js
+  components/   # componentes reutilizáveis
+  services/     # chamadas à API
+  hooks/        # hooks customizados
+  styles/       # estilos (Tailwind ou CSS modules)
+
+2. Backend (Node.js + Express)
+
+- Camada de lógica de negócios e API.
+
+- Usa PostgreSQL via Prisma (ORM).
+
+- Emite eventos via Socket.io pros clientes acompanharem status do pedido em tempo real.
+
+- Estrutura em camadas:
+
+backend/
+  src/
+    modules/
+      users/        # cadastro e login de usuários
+      merchants/    # comércios
+      products/     # cardápio
+      orders/       # pedidos e status
+      reviews/      # avaliações (futuro)
+    shared/
+      config/       # configs gerais (db, env)
+      middlewares/  # autenticação, logs, etc.
+      utils/        # funções auxiliares
+    app.ts          # inicialização do servidor
+  prisma/
+    schema.prisma   # definição do banco
